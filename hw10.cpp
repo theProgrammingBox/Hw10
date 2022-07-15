@@ -33,7 +33,7 @@ class vector {
 public:
     vector(int s) : vsize{s}, elem{new double[s]} { } // constructor
     vector(const vector&);                        // copy constructor: defines the copy operation
-    vector(vector&&);                             // move constructor: defines the move operation
+    vector(vector&&)noexcept;                     // move constructor: defines the move operation
     ~vector() { delete[] elem; }                  // destructor
 
     int size() const { return vsize; }            // the current size
@@ -42,7 +42,7 @@ public:
     void set(int n, double v) { elem[n]=v; }      // access: write
 
     vector& operator=(const vector&);             // copy assignment
-    vector& operator=(vector&&);                  // move assignment
+    vector& operator=(vector&&)noexcept;          // move assignment
 };
 
 //------------------------------------------------------------------------------
@@ -221,3 +221,9 @@ int main()
 
 // What happens when the temp vector (in function scope) is returned(by value) from the fill_doubles function and assigned to v6 in main?
 // The temp vector is returned by value from the fill_doubles function, and is assigned to v6 in main. The temp vector is moved to v6, and the temp vector is deleted.
+
+// Is the copy or move constructor invoked?
+// The copy constructor is invoked when a vector is assigned to another vector. The move constructor is invoked when you use std::move
+
+// How does this result in improved performance?
+// The move constructor doesn't copy elements, it just swaps important pointers.
